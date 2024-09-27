@@ -1,0 +1,48 @@
+.AppLink {
+    color: var(--btn-bg-color);
+    font-size: 18px;
+    position: relative;
+    text-decoration: none;
+}
+
+@media (width < 960px) {
+    .AppLink {
+        font-size: 14px;
+    }
+
+}
+
+.AppLink::after {
+    width: 100%;
+    height: 1.5px;
+    transition: transform 0.2s ease-in-out;
+    content: '';
+    position: absolute;
+    background-color: var(--btn-bg-color);
+    bottom: -5px;
+    right: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+.AppLink:hover::after {
+    height: 1.5px;
+    transform: scaleX(1);
+}
+
+.active {
+    font-weight: bold;
+
+    &::after {
+        width: 100%;
+        height: 1.5px;
+        transition: transform 0.2s ease-in-out;
+        content: '';
+        position: absolute;
+        background-color: var(--btn-bg-color);
+        bottom: -5px;
+        right: 0;
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+}

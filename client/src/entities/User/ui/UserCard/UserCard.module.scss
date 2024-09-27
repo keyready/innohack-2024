@@ -1,0 +1,39 @@
+.UserCard {
+    padding: 25px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.settingsButton {
+    padding: 12px !important;
+    border-radius: 50% !important;
+    background: #F1F1F1 !important;
+    transition: 200ms !important;
+
+    &:hover {
+        background: var(--btn-bg-color) !important;
+    }
+}
+
+.logoutButton {
+    padding: 12px !important;
+    border-radius: 50% !important;
+    background: #F1F1F1 !important;
+    transition: 200ms !important;
+
+    &:hover {
+        background: #FFA9BD !important;
+    }
+}
+
+.selectedCard {
+    background: #86B3FF;
+
+    &:hover {
+        background: #86B3FF !important;
+    }
+}
