@@ -4,7 +4,8 @@ import { classNames } from '@/shared/lib/classNames';
 import { useTheme } from '@/app/providers/ThemeProvider';
 import { AppRouter } from '@/app/providers/AppRouter';
 import { Toaster } from '@/widgets/Toaster';
-import { Navbar } from '@/widgets/Navbar';
+import { HStack } from '@/shared/ui/Stack';
+import { Sidebar } from '@/widgets/Sidebar';
 
 export const App = () => {
     const { theme } = useTheme();
@@ -12,8 +13,10 @@ export const App = () => {
     return (
         <div className={classNames('app', {}, [theme])}>
             <Suspense fallback="">
-                <Navbar />
-                <AppRouter />
+                <HStack maxW>
+                    <Sidebar />
+                    <AppRouter />
+                </HStack>
                 <Toaster />
             </Suspense>
         </div>

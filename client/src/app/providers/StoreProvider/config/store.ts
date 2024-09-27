@@ -5,7 +5,6 @@ import { StateSchema } from './StateSchema';
 
 import { UserReducer } from '@/entities/User';
 import { $api } from '@/shared/api/api';
-import { UIReducer } from '@/features/UI';
 import { rtkApi } from '@/shared/api/rtkApi';
 
 export function CreateReduxStore(
@@ -14,7 +13,6 @@ export function CreateReduxStore(
 ) {
     const rootReducers: ReducersMapObject<StateSchema> = {
         ...lazyReducers,
-        ui: UIReducer,
         user: UserReducer,
         [rtkApi.reducerPath]: rtkApi.reducer,
     };

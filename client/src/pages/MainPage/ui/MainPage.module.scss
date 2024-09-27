@@ -1,28 +1,2 @@
-.MainPage {
-    display: grid;
-    gap: 16px;
-    grid-template-rows: 1fr;
-    grid-template-columns: 3fr 2fr;
-    position: relative;
-}
-
-.placeholderImage {
-    width: 100%;
-    height: calc(100vh - 140px);
-    border-radius: 24px !important;
-}
-
-.friendsListWrapper {
-    padding: 24px;
-    border-radius: 24px;
-    background: white;
-    overflow-y: auto;
-    position: relative;
-}
-
-@media (width <= 1010px) {
-    .MainPage {
-        grid-template-columns: 1fr;
-    }
-
+.main-page {
 }

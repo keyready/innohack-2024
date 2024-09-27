@@ -10,8 +10,6 @@ const initialState: UserSchema = {
     data: undefined,
     isLoading: false,
     error: undefined,
-    token: undefined,
-    isFirstVisit: true,
 };
 
 export const UserSlice = createSlice({
@@ -21,13 +19,9 @@ export const UserSlice = createSlice({
         clearError: (state) => {
             state.error = undefined;
         },
-        initApplication: (state) => {
-            state.token = localStorage.getItem(USER_LOCALSTORAGE_KEY) || '';
-        },
         logout: (state) => {
             localStorage.removeItem(USER_LOCALSTORAGE_KEY);
             state.data = undefined;
-            state.token = undefined;
             window.location.reload();
         },
     },
@@ -50,9 +44,8 @@ export const UserSlice = createSlice({
                 state.error = undefined;
                 state.isLoading = true;
             })
-            .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(loginUser.fulfilled, (state) => {
                 state.isLoading = false;
-                state.token = action.payload;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.isLoading = false;

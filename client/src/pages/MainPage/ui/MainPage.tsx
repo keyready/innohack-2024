@@ -2,10 +2,15 @@ import classes from './MainPage.module.scss';
 
 import { Page } from '@/widgets/Page';
 import { classNames } from '@/shared/lib/classNames';
+import { LoginButton } from '@/entities/User';
+import { VStack } from '@/shared/ui/Stack';
 
 const MainPage = () => (
     <Page className={classNames(classes.MainPage, {}, [])}>
-        <h1>ghbdtn vbh</h1>
+        <VStack maxW justify="center" align="center"
+maxH>
+            <LoginButton />
+        </VStack>
     </Page>
 );
 

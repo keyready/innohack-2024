@@ -8,15 +8,17 @@ import {
 import { AxiosInstance } from 'axios';
 
 import { UserSchema } from '@/entities/User';
-import { UISchema } from '@/features/UI';
 import { rtkApi } from '@/shared/api/rtkApi';
+import { ProjectSchema } from '@/entities/Project';
+import { CommitSchema } from '@/entities/Commit';
 
 export interface StateSchema {
-    ui: UISchema;
     user: UserSchema;
     [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>;
 
     // asynchronous reducers
+    project?: ProjectSchema;
+    commit?: CommitSchema;
 }
 
 export type StateSchemaKey = keyof StateSchema;

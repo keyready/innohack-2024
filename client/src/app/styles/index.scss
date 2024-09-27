@@ -13,7 +13,7 @@
 }
 
 .app {
-    background: var(--bg-color);
+    background: var(--bg-gradient);
     max-height: 100vh;
     overflow: hidden;
 }
@@ -25,19 +25,4 @@
     justify-content: center;
     gap: 12px;
     position: relative;
-}
-
-
-@media (width < 1010px) {
-    .page {
-        padding: 0 30px;
-    }
-
-}
-
-@media (width < 500px) {
-    .page {
-        padding: 0;
-    }
-
 }
