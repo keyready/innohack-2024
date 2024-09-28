@@ -33,32 +33,14 @@ export const ProjectsList = (props: ProjectsListProps) => {
         return (
             <VStack maxW className={classNames(classes.ProjectsList, {}, [className])}>
                 <h1 className="text-l text-black">{t('Вы пока не добавили ни одного проекта')}</h1>
-                <Button className="fixed bottom-10 right-10" onClick={handleImportProjectClick}>
+                <Button
+                    className="fixed bottom-10 right-10 shadow-2xl"
+                    onClick={handleImportProjectClick}
+                >
                     <RiImportLine />
                     <p>{t('Импортировать проект')}</p>
                 </Button>
                 <ImportReposModal isOpen={isModalOpened} setIsOpen={setIsModalOpened} />
-
-                <div className="grid w-full grid-cols-3 gap-4">
-                    {new Array(5).fill(0).map((_, index) => (
-                        <ProjectPreviewCard
-                            key={index}
-                            project={{
-                                created_at: new Date(),
-                                name: 'Мои проекты',
-                                url: '//',
-                                private: false,
-                                commitsId: [],
-                                author: {
-                                    name: 'keyready',
-                                    avatar: 'https://avatars.githubusercontent.com/u/93424230?v=4',
-                                },
-                                id: index,
-                                description: 'Вы пока не добавили ни одного проекта',
-                            }}
-                        />
-                    ))}
-                </div>
             </VStack>
         );
     }
@@ -71,7 +53,7 @@ export const ProjectsList = (props: ProjectsListProps) => {
                 ))}
             </div>
             <Button
-                className="bg-accent fixed bottom-10 right-10"
+                className="bg-accent fixed bottom-10 right-10 shadow-2xl"
                 onClick={handleImportProjectClick}
             >
                 <RiImportLine className="text-white" />

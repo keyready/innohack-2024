@@ -22,7 +22,7 @@ export const Toaster = memo((props: ToasterProps) => {
             toastOptions={{
                 className: '',
                 style: {
-                    background: '#eaeaea',
+                    background: 'linear-gradient(139deg, #FFF9E7 0%, #C7D5E3 100%)',
                     color: '#303030',
                     fontWeight: 'bold',
                     textAlign: 'center',

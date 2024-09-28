@@ -138,14 +138,14 @@ const DetailedProjectPage = memo((props: DetailedProjectPageProps) => {
     return (
         <DynamicModuleLoader reducers={{ project: ProjectReducer }}>
             <Page className={classNames(classes.DetailedProjectPage, {}, [className])}>
-                <VStack maxW gap="12px">
+                <VStack maxW gap="12px" className="relative">
                     <PageTitle title="Проект" />
 
                     <HStack
                         maxW
                         justify="between"
                         align="center"
-                        className="p-5 rounded-xl bg-white"
+                        className="p-5 rounded-xl bg-white sticky top-2 z-10 shadow-2xl"
                     >
                         <h1 className="font-bold text-2xl text-black">{project?.name}</h1>
                         <HStack>
@@ -154,8 +154,8 @@ const DetailedProjectPage = memo((props: DetailedProjectPageProps) => {
                         </HStack>
                     </HStack>
 
-                    <div className="w-full items-start gap-4 grid grid-cols-5">
-                        <VStack maxW className="col-span-4" gap="12px">
+                    <HStack className="w-full items-start relative gap-4">
+                        <VStack maxW className="w-4/5" gap="12px">
                             <HStack
                                 maxW
                                 justify="between"
@@ -167,7 +167,7 @@ const DetailedProjectPage = memo((props: DetailedProjectPageProps) => {
                             <TasksList projectId={Number(projectId)} />
                         </VStack>
 
-                        <VStack gap="12px" maxW className="col-span-1">
+                        <VStack gap="12px" maxW className="w-1/5 sticky top-20">
                             <HStack
                                 justify="between"
                                 align="center"
@@ -201,7 +201,7 @@ const DetailedProjectPage = memo((props: DetailedProjectPageProps) => {
                                 </HStack>
                             </VStack>
                         </VStack>
-                    </div>
+                    </HStack>
                 </VStack>
             </Page>
         </DynamicModuleLoader>

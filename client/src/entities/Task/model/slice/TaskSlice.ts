@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { TaskSchema } from '../types/TaskSchema';
 import { createTask } from '../service/createTask';
+import { changeTask } from '../service/changeTask';
 
 const initialState: TaskSchema = {
     data: undefined,
@@ -23,6 +24,18 @@ export const TaskSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(createTask.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(changeTask.pending, (state) => {
+                state.error = undefined;
+                state.isLoading = true;
+            })
+            .addCase(changeTask.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(changeTask.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             });

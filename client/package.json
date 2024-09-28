@@ -57,8 +57,10 @@
         "vite-plugin-svgr": "^4.2.0"
     },
     "dependencies": {
+        "@internationalized/date": "^3.5.5",
         "@nextui-org/react": "^2.4.6",
         "@okteto/react-oauth2-login": "^1.1.2",
+        "@react-aria/i18n": "^3.12.2",
         "@reduxjs/toolkit": "^1.8.0",
         "@remixicon/react": "^4.2.0",
         "axios": "1.6.0",
