@@ -7,8 +7,8 @@ import { classNames } from '@/shared/lib/classNames';
 
 interface SelectBugProps {
     className?: string;
-    defaultValue: TaskPriority;
-    selectedKey: string;
+    defaultValue?: TaskPriority;
+    selectedKey?: string;
     setSelectedKey: (value: string) => void;
     isDisabled?: boolean;
 }
@@ -29,8 +29,10 @@ export const SelectTaskPriority = (props: SelectBugProps) => {
                 return 'Бэклог';
             case TaskPriority.CRITICAL:
                 return 'Критический';
-            default:
+            case TaskPriority.MEDIUM:
                 return 'Средний';
+            default:
+                return '';
         }
     }, []);
 
@@ -40,19 +42,21 @@ export const SelectTaskPriority = (props: SelectBugProps) => {
                 return 'danger';
             case TaskPriority.BACKLOG:
                 return 'success';
-            default:
+            case TaskPriority.MEDIUM:
                 return 'warning';
+            default:
+                return 'default';
         }
     }, []);
 
     return (
         <Select
             label="Приоритет задачи"
-            className={classNames('w-2/4', {}, [className])}
+            className={classNames('', {}, [className])}
             aria-label="Выберите приоритет задачи"
             color={renderItemColor(selectedKey as TaskPriority)}
             onChange={handleSelectChange}
-            defaultSelectedKeys={new Set([defaultValue])}
+            defaultSelectedKeys={new Set(defaultValue ? [defaultValue] : [])}
             isLoading={isDisabled}
             isDisabled={isDisabled}
         >

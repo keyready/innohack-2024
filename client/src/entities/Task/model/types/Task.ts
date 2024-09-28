@@ -19,3 +19,8 @@ export interface Task {
     deadline: Date;
     createdDate: Date;
 }
+
+export interface TaskFilter {
+    status?: TaskStatus;
+    priority?: TaskPriority;
+}

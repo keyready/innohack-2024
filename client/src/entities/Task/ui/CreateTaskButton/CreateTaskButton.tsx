@@ -39,7 +39,9 @@ export const CreateTaskButton = (props: CreateTaskButtonProps) => {
 
     const dispatch = useAppDispatch();
 
-    const { refetch } = useTasks(projectId || -1);
+    const { refetch } = useTasks({
+        projectId: projectId || -1,
+    });
 
     const isTaskCreating = useSelector(getTaskIsLoading);
 

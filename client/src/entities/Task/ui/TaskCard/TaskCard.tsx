@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Task, TaskPriority, TaskStatus } from '../../model/types/Task';
@@ -22,7 +22,9 @@ interface TaskCardProps {
 export const TaskCard = (props: TaskCardProps) => {
     const { className, projectId, task } = props;
 
-    const { refetch } = useTasks(projectId || -1);
+    const { refetch } = useTasks({
+        projectId: projectId || -1,
+    });
 
     const [newPriority, setNewPriority] = useState<TaskPriority>(task.priority);
     const [newStatus, setNewStatus] = useState<TaskStatus>(task.status);
@@ -30,6 +32,16 @@ export const TaskCard = (props: TaskCardProps) => {
     const dispatch = useAppDispatch();
 
     const isTaskChanging = useSelector(getTaskIsLoading);
+
+    const renderDate = useMemo(
+        () =>
+            `до ${new Date(task.deadline).toLocaleString('ru-RU', {
+                year: '2-digit',
+                month: '2-digit',
+                day: '2-digit',
+            })}`,
+        [task.deadline],
+    );
 
     const handleChangeStatus = useCallback(
         async (key: string) => {
@@ -72,7 +84,10 @@ export const TaskCard = (props: TaskCardProps) => {
             className={classNames('p-4 bg-white rounded-xl', {}, [className])}
         >
             <VStack maxW>
-                <h1 className="text-l text-black">{task.title}</h1>
+                <HStack maxW>
+                    <h1 className="text-l text-black">{task.title}</h1>
+                    <p className="text-xs text-gray-500">{renderDate}</p>
+                </HStack>
                 <p className="text-black">{task.description}</p>
             </VStack>
 

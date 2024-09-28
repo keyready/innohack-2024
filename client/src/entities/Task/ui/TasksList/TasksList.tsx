@@ -8,18 +8,28 @@ import { classNames } from '@/shared/lib/classNames';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Skeleton } from '@/shared/ui/Skeleton';
 import { DynamicModuleLoader } from '@/shared/lib/DynamicModuleLoader';
-import { TaskReducer } from '@/entities/Task';
+import { TaskFilter, TaskReducer } from '@/entities/Task';
 
 interface TasksListProps {
     className?: string;
     projectId?: number;
     isGlobalLoading?: boolean;
+    filters?: TaskFilter;
 }
 
 export const TasksList = (props: TasksListProps) => {
-    const { className, isGlobalLoading, projectId } = props;
+    const { className, filters, isGlobalLoading, projectId } = props;
 
-    const { data: tasks, isLoading } = useTasks(projectId || -1);
+    const { data: tasks, isLoading } = useTasks(
+        {
+            projectId: projectId || -1,
+            status: filters?.status,
+            priority: filters?.priority,
+        },
+        {
+            refetchOnMountOrArgChange: true,
+        },
+    );
 
     if (isLoading || isGlobalLoading) {
         return (

@@ -1,7 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ThunkConfig } from 'app/providers/StoreProvider/config/StateSchema';
+import { AxiosError } from 'axios';
 
 import { Commit } from '../types/Commit';
+
+import { ThunkConfig } from '@/app/providers/StoreProvider/config/StateSchema';
 
 export const fetchCommit = createAsyncThunk<Commit, string, ThunkConfig<string>>(
     'Commit/fetchCommit',
@@ -18,6 +20,7 @@ export const fetchCommit = createAsyncThunk<Commit, string, ThunkConfig<string>>
             return response.data;
         } catch (e) {
             const axiosError = e as AxiosError;
+            // @ts-ignore
             return rejectWithValue(axiosError.response?.data?.message || 'Произошла ошибка');
         }
     },

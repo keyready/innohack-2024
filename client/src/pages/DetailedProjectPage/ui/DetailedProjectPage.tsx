@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RiCalendarLine, RiGlobalLine, RiGroupLine } from '@remixicon/react';
@@ -7,6 +7,7 @@ import { Image } from '@nextui-org/react';
 
 import classes from './DetailedProjectPage.module.scss';
 
+import { TaskFilter, TaskFilters, TasksList } from '@/entities/Task';
 import { Page } from '@/widgets/Page';
 import { classNames } from '@/shared/lib/classNames';
 import { PageTitle } from '@/shared/ui/PageTitle';
@@ -21,7 +22,6 @@ import { DynamicModuleLoader } from '@/shared/lib/DynamicModuleLoader';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Skeleton } from '@/shared/ui/Skeleton';
-import { TasksList } from '@/entities/Task';
 
 interface DetailedProjectPageProps {
     className?: string;
@@ -39,6 +39,8 @@ const DetailedProjectPage = memo((props: DetailedProjectPageProps) => {
 
     const project = useSelector(getProjectData);
     const isProjectLoading = useSelector(getProjectIsLoading);
+
+    const [filters, setFilters] = useState<TaskFilter>({});
 
     useEffect(() => {
         if (projectId) {
@@ -145,9 +147,16 @@ const DetailedProjectPage = memo((props: DetailedProjectPageProps) => {
                         maxW
                         justify="between"
                         align="center"
-                        className="p-5 rounded-xl bg-white sticky top-2 z-10 shadow-2xl"
+                        className="p-5 rounded-xl bg-white sticky top-2 z-20 shadow-2xl"
                     >
-                        <h1 className="font-bold text-2xl text-black">{project?.name}</h1>
+                        <a
+                            href={`https://github.com${project?.url.split('repos')[1]}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline font-bold text-2xl text-black"
+                        >
+                            {project?.name}
+                        </a>
                         <HStack>
                             <RiCalendarLine className="text-accent" />
                             <h2 className="text-black">{renderDate}</h2>
@@ -164,7 +173,7 @@ const DetailedProjectPage = memo((props: DetailedProjectPageProps) => {
                             >
                                 <h1 className="text-xl text-black uppercase">Задачи</h1>
                             </HStack>
-                            <TasksList projectId={Number(projectId)} />
+                            <TasksList filters={filters} projectId={Number(projectId)} />
                         </VStack>
 
                         <VStack gap="12px" maxW className="w-1/5 sticky top-20">
@@ -200,6 +209,8 @@ const DetailedProjectPage = memo((props: DetailedProjectPageProps) => {
                                     <h2 className="text-left w-full text-l text-black">Языки</h2>
                                 </HStack>
                             </VStack>
+
+                            <TaskFilters filters={filters} setFilters={setFilters} />
                         </VStack>
                     </HStack>
                 </VStack>

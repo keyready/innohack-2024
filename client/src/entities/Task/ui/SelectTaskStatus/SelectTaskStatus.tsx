@@ -7,8 +7,8 @@ import { classNames } from '@/shared/lib/classNames';
 
 interface SelectBugProps {
     className?: string;
-    defaultValue: TaskStatus;
-    selectedKey: string;
+    defaultValue?: TaskStatus;
+    selectedKey: string | undefined;
     setSelectedKey: (value: string) => void;
     isDisabled?: boolean;
 }
@@ -29,8 +29,10 @@ export const SelectTaskStatus = (props: SelectBugProps) => {
                 return 'Новая';
             case TaskStatus.DONE:
                 return 'Решена';
-            default:
+            case TaskStatus.IN_PROGRESS:
                 return 'В процессе';
+            default:
+                return '';
         }
     }, []);
 
@@ -40,8 +42,10 @@ export const SelectTaskStatus = (props: SelectBugProps) => {
                 return 'danger';
             case TaskStatus.DONE:
                 return 'success';
-            default:
+            case TaskStatus.IN_PROGRESS:
                 return 'warning';
+            default:
+                return 'default';
         }
     }, []);
 
@@ -49,12 +53,12 @@ export const SelectTaskStatus = (props: SelectBugProps) => {
         <Select
             isLoading={isDisabled}
             isDisabled={isDisabled}
-            label="Приоритет задачи"
-            className={classNames('w-2/4', {}, [className])}
-            aria-label="Выберите приоритет задачи"
+            label="Статус задачи"
+            className={classNames('', {}, [className])}
+            aria-label="Выберите статус задачи"
             color={renderItemColor(selectedKey as TaskStatus)}
             onChange={handleSelectChange}
-            defaultSelectedKeys={new Set([defaultValue])}
+            defaultSelectedKeys={new Set(defaultValue ? [defaultValue] : [])}
         >
             <SelectItem
                 aria-label={TaskStatus.DONE}
