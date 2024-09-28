@@ -23,11 +23,17 @@ export const UserCard = memo((props: UserCardProps) => {
             maxW
             gap="12px"
             align="center"
-            justify="center"
+            justify="between"
         >
-            <Image src={user.avatar} width={35} />
-            <h1>{user.name}</h1>
-            <Button onClick={() => onInviteClick?.(user.id)} className="p-0">
+            <HStack gap="12px">
+                <Image src={user.avatar} width={35} />
+                <h1>{user.login}</h1>
+            </HStack>
+            <Button
+                color="success"
+                className="h-fit py-1 px-3"
+                onClick={() => onInviteClick?.(user.id)}
+            >
                 Пригласить
             </Button>
         </HStack>

@@ -85,7 +85,10 @@ const DetailedProjectPage = memo((props: DetailedProjectPageProps) => {
 
                         <VStack gap="12px" maxW className="w-1/5 sticky top-20">
                             <AuthorBlock project={project} />
-                            <UsersList users={project?.collaborators} />
+                            <UsersList
+                                projectId={Number(projectId)}
+                                users={project?.collaborators}
+                            />
 
                             <VStack
                                 maxW
