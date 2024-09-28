@@ -7,12 +7,15 @@ import (
 	"backend/internal/services"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"net/http"
 )
 
 func InitRouter(db *gorm.DB) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+
+	r.StaticFS("/swagger", http.Dir("docs/"))
 
 	ar := repositories.NewAuthRepositoryImpl(db)
 	as := services.NewAuthServiceImpl(ar)
