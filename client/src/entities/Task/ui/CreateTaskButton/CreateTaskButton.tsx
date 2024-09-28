@@ -18,14 +18,16 @@ import { Task, TaskPriority } from '../../model/types/Task';
 import { createTask } from '../../model/service/createTask';
 import { getTaskIsLoading } from '../../model/selectors/TaskSelectors';
 import { TaskReducer } from '../../model/slice/TaskSlice';
+import { SelectTaskPriority } from '../SelectTaskPriority/SelectTaskPriority';
+import { useTasks } from '../../api/TaskApi';
 
 import { classNames } from '@/shared/lib/classNames';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
 import { toastDispatch } from '@/widgets/Toaster';
 import { DynamicModuleLoader } from '@/shared/lib/DynamicModuleLoader';
-import { SelectTaskPriority } from '@/entities/Task/ui/SelectTaskPriority/SelectTaskPriority';
-import { useTasks } from '@/entities/Task/api/TaskApi';
+import { UserAutocomplete } from '@/entities/User';
+import { getProjectData } from '@/entities/Project';
 
 interface CreateTaskButtonProps {
     className?: string;
@@ -38,6 +40,7 @@ export const CreateTaskButton = (props: CreateTaskButtonProps) => {
     const now = today(getLocalTimeZone());
 
     const dispatch = useAppDispatch();
+    const project = useSelector(getProjectData);
 
     const { refetch } = useTasks({
         projectId: projectId || -1,
@@ -62,6 +65,16 @@ export const CreateTaskButton = (props: CreateTaskButtonProps) => {
             projectId,
         }));
     }, [projectId]);
+
+    const isButtonDisabled = useMemo(
+        () =>
+            !newTask.title ||
+            !newTask.description ||
+            !newTask.deadline ||
+            !newTask.priority ||
+            isTaskCreating,
+        [newTask, isTaskCreating],
+    );
 
     const handleChangeDeadline = useCallback((event: CalendarDate) => {
         setNewTask((prevState) => ({
@@ -148,7 +161,18 @@ export const CreateTaskButton = (props: CreateTaskButtonProps) => {
                                 />
                             </I18nProvider>
 
+                            <UserAutocomplete
+                                isDisabled={isTaskCreating}
+                                selectedMember={newTask.executorId}
+                                setSelectedMember={(user) =>
+                                    setNewTask({ ...newTask, executorId: user })
+                                }
+                                project={project}
+                            />
+
                             <SelectTaskPriority
+                                isRequired
+                                isDisabled={isTaskCreating}
                                 setSelectedKey={(key) =>
                                     setNewTask({ ...newTask, priority: key as TaskPriority })
                                 }
@@ -158,6 +182,7 @@ export const CreateTaskButton = (props: CreateTaskButtonProps) => {
 
                             <Button
                                 isLoading={isTaskCreating}
+                                isDisabled={isButtonDisabled}
                                 type="submit"
                                 size="sm"
                                 className="mt-2 self-end bg-accent text-white"

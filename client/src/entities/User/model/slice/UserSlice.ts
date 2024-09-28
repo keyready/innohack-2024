@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserSchema } from '../types/UserSchema';
 import { signupUser } from '../services/authServices/signupUser';
 import { loginUser } from '../services/authServices/loginUser';
+import { inviteMember } from '../services/otherServices/inviteMember';
 
 import { USER_LOCALSTORAGE_KEY } from '@/shared/const';
 
@@ -35,6 +36,18 @@ export const UserSlice = createSlice({
                 state.data = action.payload;
             })
             .addCase(signupUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(inviteMember.pending, (state) => {
+                state.error = undefined;
+                state.isLoading = true;
+            })
+            .addCase(inviteMember.fulfilled, (state, action: PayloadAction<any>) => {
+                state.isLoading = false;
+            })
+            .addCase(inviteMember.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             })

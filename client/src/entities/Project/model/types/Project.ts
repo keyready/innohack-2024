@@ -8,6 +8,7 @@ export interface Project {
     created_at: Date;
     url: string;
     author: User;
+    collaborators: User[];
 
     private: boolean;
 }

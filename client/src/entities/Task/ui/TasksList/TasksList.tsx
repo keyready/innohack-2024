@@ -39,7 +39,8 @@ export const TasksList = (props: TasksListProps) => {
                 className={classNames('p-4 bg-white rounded-xl', {}, [className])}
             >
                 {new Array(4).fill(null).map((_, index) => (
-                    <Skeleton width="100%" height={120} key={index} />
+                    <Skeleton dark width="100%" height={120}
+key={index} />
                 ))}
             </VStack>
         );

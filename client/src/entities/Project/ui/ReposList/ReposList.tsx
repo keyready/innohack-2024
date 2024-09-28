@@ -37,7 +37,8 @@ export const ReposList = (props: ReposListProps) => {
         return (
             <VStack gap="12px" maxW className={classNames(classes.ProjectsList, {}, [className])}>
                 {new Array(5).fill(0).map((_, index) => (
-                    <Skeleton rounded={8} width="100%" height={60} key={index} />
+                    <Skeleton rounded={8} width="100%" height={60}
+key={index} />
                 ))}
             </VStack>
         );

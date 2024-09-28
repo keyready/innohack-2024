@@ -18,6 +18,7 @@ export interface Task {
     priority: TaskPriority;
     deadline: Date;
     createdDate: Date;
+    executorId: string;
 }
 
 export interface TaskFilter {

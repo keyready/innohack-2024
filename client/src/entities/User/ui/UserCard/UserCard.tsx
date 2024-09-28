@@ -1,5 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { memo } from 'react';
+import { Button, Image } from '@nextui-org/react';
+
+import { User } from '../../model/types/User';
 
 import classes from './UserCard.module.scss';
 
@@ -8,12 +10,12 @@ import { HStack } from '@/shared/ui/Stack';
 
 interface UserCardProps {
     className?: string;
+    user: User;
+    onInviteClick?: (userId?: number) => void;
 }
 
 export const UserCard = memo((props: UserCardProps) => {
-    const { t } = useTranslation('main-page');
-
-    const { className } = props;
+    const { className, user, onInviteClick } = props;
 
     return (
         <HStack
@@ -23,7 +25,11 @@ export const UserCard = memo((props: UserCardProps) => {
             align="center"
             justify="center"
         >
-            привет мир
+            <Image src={user.avatar} width={35} />
+            <h1>{user.name}</h1>
+            <Button onClick={() => onInviteClick?.(user.id)} className="p-0">
+                Пригласить
+            </Button>
         </HStack>
     );
 });

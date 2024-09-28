@@ -11,10 +11,11 @@ interface SelectBugProps {
     selectedKey?: string;
     setSelectedKey: (value: string) => void;
     isDisabled?: boolean;
+    isRequired?: boolean;
 }
 
 export const SelectTaskPriority = (props: SelectBugProps) => {
-    const { defaultValue, className, isDisabled, setSelectedKey, selectedKey } = props;
+    const { defaultValue, isRequired, className, isDisabled, setSelectedKey, selectedKey } = props;
 
     const handleSelectChange = useCallback(
         (e: ChangeEvent<HTMLSelectElement>) => {
@@ -59,6 +60,7 @@ export const SelectTaskPriority = (props: SelectBugProps) => {
             defaultSelectedKeys={new Set(defaultValue ? [defaultValue] : [])}
             isLoading={isDisabled}
             isDisabled={isDisabled}
+            isRequired={isRequired}
         >
             <SelectItem
                 aria-label={TaskPriority.BACKLOG}

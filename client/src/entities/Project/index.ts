@@ -10,3 +10,4 @@ export {
 
 export { ProjectsList } from './ui/ProjectsList/ProjectsList';
 export { fetchProject } from './model/service/fetchProject';
+export { ProjectInfoBlock } from './ui/ProjectInfoBlock/ProjectInfoBlock';

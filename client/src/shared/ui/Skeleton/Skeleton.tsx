@@ -5,10 +5,11 @@ interface SkeletonProps {
     height: number | string;
     rounded?: number | string;
     className?: string;
+    dark?: boolean;
 }
 
 export const Skeleton = (props: SkeletonProps) => {
-    const { className, height, rounded = 4, width } = props;
+    const { className, dark, height, rounded = 4, width } = props;
 
     return (
         <ContentLoader
@@ -16,8 +17,8 @@ export const Skeleton = (props: SkeletonProps) => {
             width={width}
             height={height}
             viewBox={`0 0 ${width} ${height}`}
-            backgroundColor="#e2e2e2"
-            foregroundColor="#f1f1f1"
+            backgroundColor={dark ? '#BFBFBF' : '#e2e2e2'}
+            foregroundColor={dark ? '#DFDFDF' : '#f1f1f1'}
             className={className}
         >
             <rect x="0" y="0" rx={rounded}

@@ -33,8 +33,10 @@ export const Sidebar = (props: SidebarProps) => {
             <VStack maxH maxW align="center">
                 <Image src="/static/logo.webp" width="75%" />
 
-                <VStack className="-translate-y-16" flexGrow maxW justify="center" align="center">
-                    <VStack maxW gap="8px" justify="center" align="center">
+                <VStack className="-translate-y-16" flexGrow maxW
+justify="center" align="center">
+                    <VStack maxW gap="8px" justify="center"
+align="center">
                         <AppLink to={RoutePath.main}>
                             <Icon className="text-white" Svg={HomeIcon} />
                         </AppLink>

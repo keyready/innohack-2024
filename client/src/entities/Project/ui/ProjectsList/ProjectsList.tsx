@@ -11,6 +11,7 @@ import classes from './ProjectsList.module.scss';
 
 import { classNames } from '@/shared/lib/classNames';
 import { VStack } from '@/shared/ui/Stack';
+import { Skeleton } from '@/shared/ui/Skeleton';
 
 interface ProjectsListProps {
     className?: string;
@@ -28,6 +29,19 @@ export const ProjectsList = (props: ProjectsListProps) => {
     const handleImportProjectClick = useCallback(() => {
         setIsModalOpened(true);
     }, []);
+
+    if (isProjectsLoading) {
+        return (
+            <VStack maxW className={classNames(classes.ProjectsList, {}, [className])}>
+                <div className="grid w-full grid-cols-3 gap-4">
+                    {new Array(7).fill(0).map((_, index) => (
+                        <Skeleton dark width="100%" height={180}
+rounded={18} key={index} />
+                    ))}
+                </div>
+            </VStack>
+        );
+    }
 
     if (!projects?.length) {
         return (

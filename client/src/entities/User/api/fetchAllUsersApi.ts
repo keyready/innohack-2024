@@ -6,7 +6,7 @@ const fetchAllUsersApi = rtkApi.injectEndpoints({
     endpoints: (build) => ({
         getUsers: build.query<User[], void>({
             query: () => ({
-                url: '/users/fetch_all_users',
+                url: '/api/users',
             }),
         }),
     }),
