@@ -1,4 +1,5 @@
 import { Divider, Image } from '@nextui-org/react';
+import { useCallback } from 'react';
 
 import classes from './Sidebar.module.scss';
 
@@ -11,6 +12,8 @@ import HomeIcon from '@/shared/icons/home-icon.svg?react';
 import FolderIcon from '@/shared/icons/folder-icon.svg?react';
 import ProjectIcon from '@/shared/icons/projects-icon.svg?react';
 import { Icon } from '@/shared/ui/Icon/Icon';
+import { useAppDispatch } from '@/shared/lib/hooks/useAppDispatch';
+import { UserActions } from '@/entities/User';
 
 interface SidebarProps {
     className?: string;
@@ -18,6 +21,12 @@ interface SidebarProps {
 
 export const Sidebar = (props: SidebarProps) => {
     const { className } = props;
+
+    const dispatch = useAppDispatch();
+
+    const handleLogoutClick = useCallback(() => {
+        dispatch(UserActions.logout());
+    }, [dispatch]);
 
     return (
         <aside className={classNames(classes.Sidebar, {}, [className])}>
@@ -38,7 +47,9 @@ export const Sidebar = (props: SidebarProps) => {
                     </VStack>
                     <Divider className="bg-white w-2/4 my-3" />
                     <AppLink to={RoutePath.main}>
-                        <Icon className="text-red-500" Svg={LogoutIcon} />
+                        <button type="button" onClick={handleLogoutClick}>
+                            <Icon className="text-red-500" Svg={LogoutIcon} />
+                        </button>
                     </AppLink>
                 </VStack>
             </VStack>

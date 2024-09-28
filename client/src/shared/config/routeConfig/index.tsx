@@ -29,19 +29,21 @@ export const RoutePath: Record<AppRoutes, string> = {
 
 export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
     // авторизация
-
-    // закрытые роуты
     [AppRoutes.MAIN]: {
         path: RoutePath.main,
         element: <MainPage />,
     },
+
+    // закрытые роуты
     [AppRoutes.PROJECT]: {
         path: `${RoutePath.project}:projectId`,
         element: <DetailedProjectPage />,
+        authOnly: true,
     },
     [AppRoutes.PROJECTS]: {
         path: RoutePath.projects,
         element: <ProjectsPage />,
+        authOnly: true,
     },
 
     // last
