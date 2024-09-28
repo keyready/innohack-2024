@@ -1,23 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
+import { Project } from '../types/Project';
+
 import { ThunkConfig } from '@/app/providers/StoreProvider/config/StateSchema';
 
-interface AddProjectProps {
-    type: 'private' | 'public';
-    name: string;
-}
-
-export const addProject = createAsyncThunk<string, AddProjectProps, ThunkConfig<string>>(
-    'Project/addProject',
-    async (props, thunkAPI) => {
+export const fetchProject = createAsyncThunk<Project, string, ThunkConfig<string>>(
+    'Project/fetchProject',
+    async (projectId, thunkAPI) => {
         const { extra, rejectWithValue } = thunkAPI;
 
         try {
-            const response = await extra.api.post<string>('/api/projects/import', {
-                name: props.name,
-                type: props.type,
-            });
+            const response = await extra.api.get<Project>(`/api/projects/project/${projectId}`);
 
             if (!response.data) {
                 throw new Error();

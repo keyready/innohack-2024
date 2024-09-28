@@ -1,54 +1,43 @@
 import { useTranslation } from 'react-i18next';
-import { Pagination } from '@nextui-org/react';
+import { Divider, Pagination } from '@nextui-org/react';
+import { useEffect, useState } from 'react';
 
 import { ProjectCard } from '../ProjectCard/ProjectCard';
 import { Project } from '../../model/types/Project';
+import { ProjectReducer } from '../../model/slice/ProjectSlice';
 
 import classes from './ReposList.module.scss';
 
 import { classNames } from '@/shared/lib/classNames';
 import { HStack, VStack } from '@/shared/ui/Stack';
 import { Skeleton } from '@/shared/ui/Skeleton';
+import { DynamicModuleLoader } from '@/shared/lib/DynamicModuleLoader';
 
 interface ReposListProps {
     className?: string;
     repos?: Project[];
     isLoading?: boolean;
-    setPage?: (page: number) => void;
-    page?: number;
     total?: number;
 }
 
-// const repos: Project[] = [
-//     {
-//         id: 1,
-//         private: false,
-//         name: 'Project 1',
-//         description: 'Description of project 1',
-//         commitsId: [1, 2, 3, 4, 5, 6],
-//         createdAt: new Date(),
-//     },
-//     {
-//         id: 2,
-//         private: false,
-//         name: 'Project 2',
-//         description: 'Description of project 2',
-//         commitsId: [1, 2, 3, 4, 5, 6],
-//         createdAt: new Date(),
-//     },
-// ];
-
 export const ReposList = (props: ReposListProps) => {
-    const { className, isLoading, repos, setPage, total, page } = props;
+    const { className, isLoading, repos, total } = props;
 
     const { t } = useTranslation();
 
+    const [page, setPage] = useState<number>(1);
+
+    const [paginatedRepos, setPaginatedRepos] = useState<Project[]>([]);
+
+    useEffect(() => {
+        if (repos?.length) setPaginatedRepos(repos?.slice((page - 1) * 5, page * 5));
+    }, [page, repos]);
+
     if (isLoading) {
         return (
-            <VStack maxW className={classNames(classes.ProjectsList, {}, [className])}>
-                {new Array(7).fill(0).map((_, index) => (
-                    <Skeleton rounded={8} width="100%" height={30}
-key={index} />
+            <VStack gap="12px" maxW className={classNames(classes.ProjectsList, {}, [className])}>
+                {new Array(5).fill(0).map((_, index) => (
+                    <Skeleton rounded={8} width="100%" height={60} key={index} />
                 ))}
             </VStack>
         );
@@ -63,31 +52,36 @@ key={index} />
     }
 
     return (
-        <VStack
-            maxW
-            maxH
-            flexGrow
-            gap="32px"
-            justify="between"
-            className={classNames(classes.ProjectsList, {}, [className])}
-        >
-            <VStack maxW>
-                {repos.map((project) => (
-                    <ProjectCard project={project} key={project.id} />
-                ))}
-            </VStack>
+        <DynamicModuleLoader reducers={{ project: ProjectReducer }}>
+            <VStack
+                maxW
+                maxH
+                flexGrow
+                gap="32px"
+                justify="between"
+                className={classNames(classes.ProjectsList, {}, [className])}
+            >
+                <VStack maxW gap="12px">
+                    {paginatedRepos.map((project, index) => (
+                        <>
+                            <ProjectCard project={project} />
+                            {index <= 3 && <Divider />}
+                        </>
+                    ))}
+                </VStack>
 
-            <HStack justify="center" maxW>
-                <Pagination
-                    page={page}
-                    onChange={setPage}
-                    classNames={{
-                        cursor: 'bg-accent',
-                    }}
-                    color="default"
-                    total={total || 0}
-                />
-            </HStack>
-        </VStack>
+                <HStack justify="center" maxW>
+                    <Pagination
+                        page={page}
+                        onChange={setPage}
+                        classNames={{
+                            cursor: 'bg-accent text-white',
+                        }}
+                        color="default"
+                        total={total || 0}
+                    />
+                </HStack>
+            </VStack>
+        </DynamicModuleLoader>
     );
 };

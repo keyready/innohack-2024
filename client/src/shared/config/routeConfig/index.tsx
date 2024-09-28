@@ -3,6 +3,7 @@ import { RouteProps } from 'react-router-dom';
 import { MainPage } from '@/pages/MainPage';
 import { NotFound } from '@/pages/NotFound';
 import { ProjectsPage } from '@/pages/ProjectsPage';
+import { DetailedProjectPage } from '@/pages/DetailedProjectPage';
 
 export type AppRoutesProps = RouteProps & {
     authOnly?: boolean;
@@ -11,6 +12,7 @@ export type AppRoutesProps = RouteProps & {
 export enum AppRoutes {
     MAIN = 'main',
     PROJECTS = 'projects',
+    PROJECT = 'project',
 
     // last
     NOT_FOUND = 'not_found',
@@ -18,6 +20,7 @@ export enum AppRoutes {
 
 export const RoutePath: Record<AppRoutes, string> = {
     [AppRoutes.MAIN]: '/',
+    [AppRoutes.PROJECT]: '/projects/',
     [AppRoutes.PROJECTS]: '/projects',
 
     // last
@@ -31,6 +34,10 @@ export const routerConfig: Record<AppRoutes, AppRoutesProps> = {
     [AppRoutes.MAIN]: {
         path: RoutePath.main,
         element: <MainPage />,
+    },
+    [AppRoutes.PROJECT]: {
+        path: `${RoutePath.project}:projectId`,
+        element: <DetailedProjectPage />,
     },
     [AppRoutes.PROJECTS]: {
         path: RoutePath.projects,

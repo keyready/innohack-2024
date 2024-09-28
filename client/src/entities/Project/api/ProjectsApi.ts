@@ -2,22 +2,27 @@ import { Project } from '../model/types/Project';
 
 import { rtkApi } from '@/shared/api/rtkApi';
 
-interface ProjectsProps {
-    skip: number;
-    type: string;
-}
-
 interface ProjectsResponse {
     totalCount: number;
-    projects: Project[];
+    Data: Project[];
 }
 
 const fetchProjectsApi = rtkApi.injectEndpoints({
     endpoints: (build) => ({
-        getRepos: build.query<ProjectsResponse, ProjectsProps>({
-            query: (props) => ({
-                url: `/api/repos/${props.type}?skip=${props.skip}&limit=10`,
+        getRepos: build.query<ProjectsResponse, string>({
+            query: (type) => ({
+                url: `/api/repos/${type}`,
             }),
+            transformResponse: (response: any) => {
+                const { totalCount, Data } = response;
+                return {
+                    totalCount,
+                    Data: [...Data].sort(
+                        (a, b) =>
+                            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+                    ),
+                };
+            },
         }),
         getProjects: build.query<Project[], void>({
             query: () => ({

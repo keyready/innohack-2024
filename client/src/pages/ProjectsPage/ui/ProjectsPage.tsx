@@ -5,7 +5,7 @@ import classes from './ProjectsPage.module.scss';
 
 import { Page } from '@/widgets/Page';
 import { classNames } from '@/shared/lib/classNames';
-import { PageTitle } from '@/shared/ui/PageTitle/ui/PageTitle';
+import { PageTitle } from '@/shared/ui/PageTitle';
 import { ProjectsList } from '@/entities/Project';
 import { VStack } from '@/shared/ui/Stack';
 

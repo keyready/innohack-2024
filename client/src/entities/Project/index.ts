@@ -9,3 +9,4 @@ export {
 } from './model/selectors/ProjectSelectors';
 
 export { ProjectsList } from './ui/ProjectsList/ProjectsList';
+export { fetchProject } from './model/service/fetchProject';

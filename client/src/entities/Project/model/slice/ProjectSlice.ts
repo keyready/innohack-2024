@@ -1,7 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ProjectSchema } from '../types/ProjectSchema';
 import { addProject } from '../service/addProject';
+import { fetchProject } from '../service/fetchProject';
+import { Project } from '../types/Project';
 
 const initialState: ProjectSchema = {
     data: undefined,
@@ -23,6 +25,19 @@ export const ProjectSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(addProject.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(fetchProject.pending, (state) => {
+                state.error = undefined;
+                state.isLoading = true;
+            })
+            .addCase(fetchProject.fulfilled, (state, action: PayloadAction<Project>) => {
+                state.isLoading = false;
+                state.data = action.payload;
+            })
+            .addCase(fetchProject.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             });

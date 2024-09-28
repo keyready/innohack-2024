@@ -17,29 +17,24 @@ export const ImportReposModal = (props: ImportReposModalProps) => {
     const { t } = useTranslation();
 
     const [activeTab, setActiveTab] = useState<string>('public');
-    const [page, setPage] = useState<number>(1);
-    const [totalRepos, setTotalRepos] = useState<number>(0);
+    const [totalRepos, setTotalRepos] = useState<number>(1);
 
-    const { data: repos, isLoading } = useRepos({
-        type: activeTab,
-        skip: (page - 1) * 10,
-    });
+    const { data: repos, isLoading, isFetching } = useRepos(activeTab);
 
     useEffect(() => {
         if (repos?.totalCount) {
-            setTotalRepos(repos.totalCount / 10 || 0);
+            setTotalRepos(Math.ceil(repos.totalCount / 5) || 0);
         }
     }, [repos?.totalCount]);
 
     const handleTabChange = useCallback((key: Key) => {
         setActiveTab(key as string);
-        setPage(1);
     }, []);
 
     return (
         <Modal
-            hideCloseButton={isLoading}
-            isDismissable={!isLoading}
+            hideCloseButton={isLoading || isFetching}
+            isDismissable={!isLoading || !isFetching}
             size="2xl"
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
@@ -55,21 +50,25 @@ export const ImportReposModal = (props: ImportReposModalProps) => {
                         tabList: 'w-full',
                     }}
                 >
-                    <Tab isDisabled={isLoading} key="public" title={t('Открытые репозитории')}>
+                    <Tab
+                        isDisabled={isLoading || isFetching}
+                        key="public"
+                        title={t('Открытые репозитории')}
+                    >
                         <ReposList
-                            page={page}
-                            setPage={setPage}
-                            isLoading={isLoading}
-                            repos={repos?.projects}
+                            isLoading={isLoading || isFetching}
+                            repos={repos?.Data}
                             total={totalRepos}
                         />
                     </Tab>
-                    <Tab isDisabled={isLoading} key="private" title={t('Приватные репозитории')}>
+                    <Tab
+                        isDisabled={isLoading || isFetching}
+                        key="private"
+                        title={t('Приватные репозитории')}
+                    >
                         <ReposList
-                            page={page}
-                            setPage={setPage}
-                            isLoading={isLoading}
-                            repos={repos?.projects}
+                            isLoading={isLoading || isFetching}
+                            repos={repos?.Data}
                             total={totalRepos}
                         />
                     </Tab>

@@ -1,9 +1,13 @@
+import { User } from '@/entities/User';
+
 export interface Project {
     id: number;
     name: string;
     description: string;
     commitsId: number[];
-    createdAt: Date;
+    created_at: Date;
+    url: string;
+    author: User;
 
     private: boolean;
 }

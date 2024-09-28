@@ -11,6 +11,7 @@ import { UserSchema } from '@/entities/User';
 import { rtkApi } from '@/shared/api/rtkApi';
 import { ProjectSchema } from '@/entities/Project';
 import { CommitSchema } from '@/entities/Commit';
+import { TaskSchema } from '@/entities/Task';
 
 export interface StateSchema {
     user: UserSchema;
@@ -19,6 +20,7 @@ export interface StateSchema {
     // asynchronous reducers
     project?: ProjectSchema;
     commit?: CommitSchema;
+    task?: TaskSchema;
 }
 
 export type StateSchemaKey = keyof StateSchema;
