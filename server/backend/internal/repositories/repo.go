@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"backend/internal/dto/other"
 	"backend/internal/dto/response"
 	"backend/pkg/settings"
 	"encoding/json"
@@ -12,8 +11,8 @@ import (
 )
 
 type RepoRepository interface {
-	FetchPrivateRepos(token string, pagination other.Pagination) (httpCode int, err error, repos response.ReposResponse)
-	FetchAllRepos(token string, pagination other.Pagination) (httpCode int, err error, repos response.ReposResponse)
+	FetchPrivateRepos(token string) (httpCode int, err error, repos response.ReposResponse)
+	FetchPublicRepos(token string) (httpCode int, err error, repos response.ReposResponse)
 }
 
 type RepoRepositoryImpl struct {
@@ -24,10 +23,12 @@ func NewRepoRepositoryImpl(db *gorm.DB) RepoRepository {
 	return &RepoRepositoryImpl{DB: db}
 }
 
-func (r RepoRepositoryImpl) FetchPrivateRepos(token string, pagination other.Pagination) (httpCode int, err error, repos response.ReposResponse) {
+func (r RepoRepositoryImpl) FetchPrivateRepos(token string) (httpCode int, err error, repos response.ReposResponse) {
+	url := fmt.Sprintf("%s&per_page=100", settings.AppSettings.GitHubPrivateRepos)
+
 	request, err := http.NewRequest(
 		http.MethodGet,
-		fmt.Sprintf("%sper_page=%s&page=%s", settings.AppSettings.GitHubPrivateRepos, pagination.PerPage, pagination.Page),
+		url,
 		nil,
 	)
 	if err != nil {
@@ -50,21 +51,17 @@ func (r RepoRepositoryImpl) FetchPrivateRepos(token string, pagination other.Pag
 
 	}
 
-	repos.Data = make([]map[string]interface{}, 0)
-	jsonErr := json.Unmarshal(body, &repos.Data)
-	if jsonErr != nil {
-		return http.StatusInternalServerError, err, repos
-	}
-
+	json.Unmarshal(body, &repos.Data)
 	repos.TotalCount = len(repos.Data)
 
 	return response.StatusCode, nil, repos
 }
 
-func (r RepoRepositoryImpl) FetchAllRepos(token string, pagination other.Pagination) (httpCode int, err error, repos response.ReposResponse) {
+func (r RepoRepositoryImpl) FetchPublicRepos(token string) (httpCode int, err error, repos response.ReposResponse) {
+	url := fmt.Sprintf("%s?per_page=100", settings.AppSettings.GitHubPublicRepos)
 	request, err := http.NewRequest(
 		http.MethodGet,
-		fmt.Sprintf("%s?per_page=%s&page=%s", settings.AppSettings.GitHubAllRepos, pagination.PerPage, pagination.Page),
+		url,
 		nil,
 	)
 	if err != nil {
@@ -85,10 +82,7 @@ func (r RepoRepositoryImpl) FetchAllRepos(token string, pagination other.Paginat
 		return http.StatusInternalServerError, err, repos
 	}
 
-	repos.Data = make([]map[string]interface{}, 0)
-
 	json.Unmarshal(body, &repos.Data)
-
 	repos.TotalCount = len(repos.Data)
 
 	return http.StatusOK, nil, repos

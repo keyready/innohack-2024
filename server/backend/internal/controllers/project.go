@@ -1,10 +1,13 @@
 package controllers
 
 import (
-	"backend/internal/dto/other"
+	"backend/internal/dto/request"
 	"backend/internal/services"
 	"backend/pkg/app"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
 )
 
 type ProjectController struct {
@@ -15,12 +18,35 @@ func NewProjectControllers(prjService services.ProjectService) *ProjectControlle
 	return &ProjectController{prjService: prjService}
 }
 
+func (prjc *ProjectController) FetchProjectById(ctx *gin.Context) {
+	appGin := app.Gin{Ctx: ctx}
+
+	projectId, _ := strconv.ParseInt(appGin.Ctx.Param("projectId"), 10, 64)
+
+	fmt.Print(projectId)
+
+	httpCode, err, project := prjc.prjService.FetchProjectById(projectId)
+	if err != nil {
+		appGin.ErrorResponse(httpCode, err)
+		return
+	}
+
+	appGin.SuccessResponse(http.StatusOK, project)
+}
+
 func (prjc *ProjectController) ImportProjectWithGit(ctx *gin.Context) {
 	appGin := app.Gin{Ctx: ctx}
 
-	repoName := appGin.Ctx.PostForm("name")
+	var importPrj request.ImportProjectRequest
+	bindErr := appGin.Ctx.ShouldBindJSON(&importPrj)
+	if bindErr != nil {
+		appGin.ErrorResponse(http.StatusBadRequest, bindErr)
+		return
+	}
 
-	httpCode, err := prjc.prjService.ImportProjectWithGit(repoName)
+	importPrj.Token = ctx.GetString("token")
+
+	httpCode, err := prjc.prjService.ImportProjectWithGit(importPrj)
 	if err != nil {
 		appGin.ErrorResponse(httpCode, err)
 		return
@@ -31,15 +57,8 @@ func (prjc *ProjectController) ImportProjectWithGit(ctx *gin.Context) {
 
 func (prjc *ProjectController) FetchAllProjects(ctx *gin.Context) {
 	appGin := app.Gin{Ctx: ctx}
-	var pagination other.Pagination
 
-	bindErr := ctx.ShouldBindQuery(&pagination)
-	if bindErr != nil {
-		appGin.ErrorResponse(500, bindErr)
-		return
-	}
-
-	httpCode, err, data := prjc.prjService.FetchAllProjects(pagination)
+	httpCode, err, data := prjc.prjService.FetchAllProjects()
 	if err != nil {
 		appGin.ErrorResponse(httpCode, err)
 		return

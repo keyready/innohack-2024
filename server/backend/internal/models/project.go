@@ -12,5 +12,12 @@ type ProjectModel struct {
 	CommitsId   pq.Int64Array `gorm:"type:integer[]" json:"commits_id"`
 	Private     bool          `json:"private"`
 
+	Url string `json:"url"`
+
+	Author    string `json:"author"`
+	AvatarUrl string `json:"avatar_url"`
+
+	TasksId pq.Int64Array `gorm:"type:integer[]" json:"tasks_id"`
+
 	CreatedAt time.Time `gorm:"autoCreateTime:default" json:"created_at"`
 }

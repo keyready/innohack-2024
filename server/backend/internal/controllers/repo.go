@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"backend/internal/dto/other"
 	"backend/internal/services"
 	"backend/pkg/app"
 	"github.com/gin-gonic/gin"
@@ -19,16 +18,9 @@ func NewRepoController(repoService services.RepoService) *RepoController {
 func (rp *RepoController) FetchPublicRepos(ctx *gin.Context) {
 	appGin := app.Gin{Ctx: ctx}
 
-	var pagination other.Pagination
-	bindErr := ctx.ShouldBindQuery(&pagination)
-	if bindErr != nil {
-		appGin.ErrorResponse(http.StatusBadRequest, bindErr)
-		return
-	}
-
 	token := ctx.GetString("token")
 
-	httpCode, err, repos := rp.repoService.FetchAllRepos(token, pagination)
+	httpCode, err, repos := rp.repoService.FetchPublicRepos(token)
 	if err != nil {
 		appGin.ErrorResponse(httpCode, err)
 		return
@@ -40,15 +32,9 @@ func (rp *RepoController) FetchPublicRepos(ctx *gin.Context) {
 func (rp *RepoController) FetchPrivateRepos(ctx *gin.Context) {
 	appGin := app.Gin{Ctx: ctx}
 
-	var pagination other.Pagination
-	bindErr := ctx.ShouldBindQuery(&pagination)
-	if bindErr != nil {
-		appGin.ErrorResponse(http.StatusBadRequest, bindErr)
-		return
-	}
 	token := ctx.GetString("token")
 
-	httpCode, err, repos := rp.repoService.FetchPrivateRepos(token, pagination)
+	httpCode, err, repos := rp.repoService.FetchPrivateRepos(token)
 	if err != nil {
 		appGin.ErrorResponse(httpCode, err)
 		return
