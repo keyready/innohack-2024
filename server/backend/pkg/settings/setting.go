@@ -23,6 +23,7 @@ type App struct {
 	RedirectUri         string
 
 	GitHubPrivateRepos string
+	GitHubPublicRepos  string
 	GitHubAllRepos     string
 
 	BaseUrl string

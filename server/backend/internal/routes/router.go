@@ -29,5 +29,15 @@ func InitRouter(db *gorm.DB) *gin.Engine {
 	prj_c := controllers.NewProjectControllers(prj_s)
 	v1.NewProjectRoutes(r, prj_c)
 
+	cr := repositories.NewCommitRepositoryImpl(db)
+	cs := services.NewCommitServiceImpl(cr)
+	cc := controllers.NewCommitController(cs)
+	v1.NewCommitRoutes(r, cc)
+
+	tr := repositories.NewTaskRepository(db)
+	ts := services.NewTaskServiceImpl(tr)
+	tc := controllers.NewTaskController(ts)
+	v1.NewTaskRoutes(r, tc)
+
 	return r
 }
