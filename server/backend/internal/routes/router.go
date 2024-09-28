@@ -1,6 +1,10 @@
 package routes
 
 import (
+	"backend/internal/controllers"
+	"backend/internal/repositories"
+	v1 "backend/internal/routes/api/v1"
+	"backend/internal/services"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -9,6 +13,21 @@ func InitRouter(db *gorm.DB) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+
+	ar := repositories.NewAuthRepositoryImpl(db)
+	as := services.NewAuthServiceImpl(ar)
+	ac := controllers.NewAuthController(as)
+	v1.NewAuthRoutes(r, ac)
+
+	rr := repositories.NewRepoRepositoryImpl(db)
+	rs := services.NewRepoServiceImpl(rr)
+	rc := controllers.NewRepoController(rs)
+	v1.NewRepoRoutes(r, rc)
+
+	prj_r := repositories.NewProjectsRepositoryImpl(db)
+	prj_s := services.NewProjectServiceImpl(prj_r)
+	prj_c := controllers.NewProjectControllers(prj_s)
+	v1.NewProjectRoutes(r, prj_c)
 
 	return r
 }

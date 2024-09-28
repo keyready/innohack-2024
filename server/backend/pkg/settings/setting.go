@@ -15,8 +15,15 @@ type App struct {
 	SmtpUser     string
 	SmtpPassword string
 
-	GitHubClientId     string
-	GitHubClientSecret string
+	GitHubClientId      string
+	GitHubClientSecret  string
+	GitHubTokenUrl      string
+	GitHubAuthUrl       string
+	GitHubDeviceAuthUrl string
+	RedirectUri         string
+
+	GitHubPrivateRepos string
+	GitHubAllRepos     string
 
 	BaseUrl string
 }

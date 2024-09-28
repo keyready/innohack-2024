@@ -23,6 +23,9 @@ func ConnectDatabase() *gorm.DB {
 	}
 
 	db.AutoMigrate(&models.UserModel{})
+	db.AutoMigrate(&models.ProjectModel{})
+	db.AutoMigrate(&models.CommitModel{})
+	db.AutoMigrate(&models.TaskModel{})
 
 	return db
 }
